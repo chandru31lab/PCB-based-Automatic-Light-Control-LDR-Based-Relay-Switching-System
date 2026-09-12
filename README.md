@@ -1,56 +1,52 @@
-# 💡 Automatic Light Control & LDR-Based Relay Switching System
+# 💡 Automatic Light Control & LDR-Based AC Load Switching System
 
-### EasyEDA-Designed Analog Light Sensing and Automatic AC Load Control
+### EasyEDA-Designed Analog Light Sensing, Threshold Detection & Relay Control
 
-> A complete analog electronics project that detects ambient light intensity using an LDR and automatically controls an AC bulb through a relay. The system uses an LM358 comparator, adjustable threshold control, BC547 transistor driver, flyback protection, and a 5V AC-DC SMPS. The complete schematic, PCB layout, 3D PCB model, and physical hardware were designed and developed using EasyEDA.
+> A custom PCB-based automatic light control system that detects ambient light using an LDR and switches an AC bulb through a relay. The circuit uses an LM358 comparator, adjustable threshold control, BC547 transistor driver, flyback protection, and a 5V AC-DC power supply. The complete schematic, PCB layout, 3D model, and hardware prototype were designed using EasyEDA.
 
 [![PCB Design](https://img.shields.io/badge/PCB%20Design-EasyEDA-blue)](https://easyeda.com/)
 [![Circuit](https://img.shields.io/badge/Circuit-Analog-green)]()
 [![Sensor](https://img.shields.io/badge/Sensor-LDR-orange)]()
 [![Comparator](https://img.shields.io/badge/Comparator-LM358-red)]()
-[![Transistor](https://img.shields.io/badge/Driver-BC547-purple)]()
+[![Driver](https://img.shields.io/badge/Driver-BC547-purple)]()
 [![Relay](https://img.shields.io/badge/Output-5V%20Relay-yellow)]()
 [![Power](https://img.shields.io/badge/Power-5V%20SMPS-blue)]()
-[![Application](https://img.shields.io/badge/Application-Automatic%20Lighting-lightgrey)]()
 
 ---
 
 ## 📌 Overview
 
-The **Automatic Light Control & LDR-Based Relay Switching System** is an analog light-sensing circuit designed to automatically switch an AC load based on ambient illumination.
+The **Automatic Light Control & LDR-Based AC Load Switching System** is an analog electronics project designed to control an AC bulb according to the surrounding light level.
 
-The system uses an **LDR (Light Dependent Resistor)** as the light sensor. The resistance of the LDR varies with the intensity of incident light. This resistance variation is converted into a voltage using a voltage-divider network.
+The **LDR (Light Dependent Resistor)** senses ambient illumination. Its resistance changes with light intensity, and a voltage-divider network converts this change into a variable voltage. An **LM358** compares the sensor voltage with an adjustable reference voltage generated using a potentiometer.
 
-An **LM358 operational amplifier** is configured as a comparator to compare the LDR sensing voltage with an adjustable reference voltage generated using a potentiometer.
+The comparator output drives a **BC547 NPN transistor**, which switches a **5V relay**. The relay contacts control the connected AC bulb.
 
-The comparator output drives a **BC547 NPN transistor**, which controls the coil of a **5V relay**. The relay contacts are then used to switch an external AC bulb.
-
-The complete project was taken from **circuit design to physical PCB implementation**, including schematic capture, PCB layout, routing, 3D visualization, fabrication, component assembly, and testing using **EasyEDA**.
+The project was developed from **schematic to physical PCB**, including schematic capture, PCB layout, routing, 3D visualization, fabrication, assembly, and testing using **EasyEDA**.
 
 ---
 
-## 🎯 Project Objective
+## 🎯 Project Objectives
 
-The main objective of this project is to develop a simple, low-cost, and reliable automatic lighting controller that can:
-
-- Detect changes in ambient light intensity
-- Convert light variations into an electrical signal
-- Compare the sensed voltage with an adjustable threshold
-- Drive a relay based on the detected light condition
-- Automatically control an AC bulb
-- Provide visual switching indication
-- Implement the complete circuit on a custom PCB
+- Detect ambient light intensity using an LDR
+- Convert light variation into a voltage signal
+- Compare the sensor voltage against an adjustable threshold
+- Drive a relay using a transistor switching stage
+- Automatically control an AC bulb/load
+- Include relay flyback protection
+- Implement the complete design on a custom PCB
 
 ---
 
 ## 🔄 System Block Diagram
 
-                 AC MAINS
+```text
+                 AC INPUT
                     │
                     ▼
              ┌─────────────┐
-             │  HLK-5M05   │
-             │ AC → 5V DC  │
+             │  HLK-5M0x   │
+             │  AC → 5V DC │
              └──────┬──────┘
                     │
                    +5V
@@ -60,11 +56,11 @@ The main objective of this project is to develop a simple, low-cost, and reliabl
           ▼                   ▼
     ┌──────────┐       ┌──────────────┐
     │    LDR   │       │ Potentiometer│
-    │  Sensor  │       │   Reference  │
+    │  Sensor  │       │  Reference   │
     └────┬─────┘       └──────┬───────┘
          │                    │
          ▼                    ▼
-    Sensor Voltage       Reference Voltage
+   Sensor Voltage       Reference Voltage
          │                    │
          └─────────┬──────────┘
                    ▼
@@ -80,509 +76,496 @@ The main objective of this project is to develop a simple, low-cost, and reliabl
             └──────┬──────┘
                    │
                    ▼
-             ┌───────────┐
-             │ 5V Relay  │
-             └─────┬─────┘
+              ┌─────────┐
+              │  Relay  │
+              └────┬────┘
                    │
                    ▼
               ┌─────────┐
               │ AC Bulb │
               └─────────┘
-⚙️ Working Principle
+```
 
-The circuit works in four major stages:
+---
 
-Light Detection
-      ↓
-Voltage Generation
-      ↓
-Threshold Comparison
-      ↓
-Relay Switching
-1. Light Detection
+## ⚙️ Working Principle
+
+### 1. Light Sensing
 
 The LDR is the primary sensing element.
 
-An LDR changes its resistance according to the intensity of light falling on its surface.
+```text
+Bright Light   → LDR Resistance Decreases
+Dark Condition → LDR Resistance Increases
+```
 
-Bright Light
-     ↓
-LDR Resistance Decreases
+The LDR and resistor form a voltage divider, converting the resistance variation into a changing sensor voltage.
 
-Dark Environment
-     ↓
-LDR Resistance Increases
+### 2. Adjustable Threshold
 
-This change in resistance is used to generate a variable voltage.
+A **100kΩ potentiometer** generates the reference voltage.
 
-2. Voltage Divider
-
-The LDR is connected as part of a voltage-divider network.
-
-The voltage divider converts the resistance variation of the LDR into a voltage that can be processed by the LM358.
-
-The approximate divider relationship is:
-
-Vout = Vin × R2 / (R1 + R2)
-
-The actual sensing voltage depends on the resistance of the LDR and the fixed resistor connected with it.
-
-Therefore:
-
-Light Intensity
-      ↓
-LDR Resistance
-      ↓
-Sensor Voltage
-3. Adjustable Threshold
-
-A potentiometer is used to generate an adjustable reference voltage.
-
-By rotating the potentiometer, the switching threshold of the circuit can be changed.
-
-This allows the user to adjust the light level at which the relay changes state.
-
-Potentiometer
-      ↓
+```text
++5V
+ │
+ ▼
+100kΩ POT
+ │
+ ▼
 Reference Voltage
-      ↓
-LM358 Comparator
+```
 
-This makes the circuit more flexible than a fixed-threshold light sensor.
+Rotating the potentiometer changes the switching threshold, allowing the circuit to be calibrated for the required light level.
 
-4. LM358 Comparator
+### 3. LM358 Comparator
 
-The LM358 compares two voltage levels:
+The LM358 compares the **LDR sensor voltage** with the **adjustable reference voltage**.
 
+```text
 LDR Sensor Voltage
         VS
 Reference Voltage
+        ↓
+  LM358 Comparator
+        ↓
+  Switching Output
+```
 
-Depending on the relationship between these voltages, the LM358 output changes state.
+When the sensor voltage crosses the selected reference level, the LM358 output changes state.
 
-Sensor Voltage > Reference
-          OR
-Sensor Voltage < Reference
-          ↓
-     LM358 Output
-          ↓
-     BC547 Driver
+### 4. BC547 Relay Driver
 
-The comparator therefore acts as the decision-making stage of the circuit.
+The comparator output drives the base of the **BC547 NPN transistor**.
 
-5. BC547 Relay Driver
-
-The LM358 output drives the base of the BC547 NPN transistor.
-
-The transistor is used as a switching device because the relay coil requires more current than the comparator output should directly provide.
-
+```text
 LM358 Output
      ↓
 BC547 Base
      ↓
-BC547 switches ON/OFF
+Transistor ON / OFF
      ↓
 Relay Coil
+```
 
-When the BC547 turns ON, current flows through the relay coil and the relay changes its contact state.
+The transistor acts as the relay driver and provides the required switching current for the relay coil.
 
-6. Relay Switching
+### 5. Relay Switching
 
-The 5V relay provides the interface between the low-voltage control circuit and the AC load.
+The energized relay changes its contact state and controls the connected AC bulb/load.
 
-5V Control Circuit
-       ↓
-    Relay Coil
-       ↓
- Relay Contacts
-       ↓
-    AC Bulb
+```text
+Low-Voltage Control
+        ↓
+     Relay Coil
+        ↓
+   Relay Contacts
+        ↓
+      AC Bulb
+```
 
-This allows the low-voltage electronics to control an external AC load.
+### 6. Flyback Protection
 
-7. Flyback Protection
+A **1N4148 diode** is connected across the relay coil to suppress the inductive voltage transient produced when the relay is switched OFF.
 
-A 1N4148 diode is connected across the relay coil.
+```text
+Relay OFF
+   ↓
+Inductive voltage transient
+   ↓
+Flyback diode provides current path
+   ↓
+Protects transistor / driver stage
+```
 
-The relay coil is an inductive load. When the transistor switches the relay OFF, the collapsing magnetic field can generate a high-voltage transient.
+---
 
-The diode provides a path for this transient current and protects the transistor and control circuit.
+## 🔌 Power Supply
 
-Relay Coil
-    │
-    ├──── D1 ────┤
-    │  1N4148    │
-    └────────────┘
-🔌 Power Supply
+The control circuit uses an **HLK-5M0x AC-DC power supply module** to obtain a 5V DC supply from the AC input.
 
-The circuit is powered using an HLK-5M05 AC-DC power supply module.
-
+```text
 AC Mains
-   │
-   ▼
-HLK-5M05
-   │
-   ▼
+   ↓
+HLK-5M0x
+   ↓
 5V DC
-   │
    ├── LM358
-   ├── LDR sensing circuit
+   ├── LDR Network
    ├── Potentiometer
    ├── BC547
-   ├── Relay coil
-   └── LED indicator
+   ├── Relay Coil
+   └── LED Indicator
+```
 
-The HLK module provides the required low-voltage DC supply for the control circuit.
+> Use the exact power-supply part number printed on the module installed on the final PCB when documenting the hardware.
 
-🧩 Hardware Components
-Component	Value / Part	Purpose
-AC-DC SMPS	HLK-5M05	Converts AC mains to 5V DC
-Op-Amp	LM358	Voltage comparison
-Sensor	LDR / VT90N1	Ambient light detection
-Potentiometer	100kΩ	Adjustable threshold
-Resistor	10kΩ	LDR voltage divider
-Transistor	BC547	Relay driver
-Relay	SRA-05VDC-CD	AC load switching
-Diode	1N4148	Relay flyback protection
-Resistor	220Ω	LED current limiting
-LED	LED1	Circuit status indication
-Terminal	2-Pin	AC input / bulb output
-🧠 Circuit Architecture
+---
 
-The complete circuit can be divided into the following functional blocks:
+## 🧩 Hardware Components
 
-Power Section
-AC Input
-   ↓
-HLK-5M05
-   ↓
-+5V DC
-Sensor Section
-LDR
- ↓
-Voltage Divider
- ↓
-Variable Sensor Voltage
-Reference Section
-+5V
- ↓
-100kΩ Potentiometer
- ↓
-Adjustable Reference Voltage
-Comparator Section
-Sensor Voltage
-      ↓
-     LM358
-      ↑
-Reference Voltage
-Driver Section
-LM358 Output
-      ↓
-    BC547
-      ↓
- Relay Coil
-Output Section
-Relay Contacts
-      ↓
-   AC Bulb
-🔧 Schematic Design
+| Component | Value / Part | Function |
+|---|---|---|
+| AC-DC Supply | HLK-5M0x | AC to 5V DC conversion |
+| Op-Amp | LM358 | Voltage comparison |
+| Sensor | LDR / VT90N1 | Ambient light detection |
+| Potentiometer | 100kΩ | Adjustable threshold |
+| Resistor | 10kΩ | LDR sensing network |
+| Transistor | BC547 | Relay driver |
+| Relay | SRA-05VDC-CD | AC load switching |
+| Diode | 1N4148 | Flyback protection |
+| Resistor | 220Ω | LED current limiting |
+| LED | LED1 | Status indication |
+| Connector | 2-Pin | AC input / bulb connection |
 
-The circuit schematic was designed and verified in EasyEDA before PCB implementation.
+---
 
-The schematic contains:
+## 🧠 Circuit Architecture
 
-AC power input
-AC-DC power supply
-LDR sensing network
-Adjustable reference network
-LM358 comparator
-BC547 transistor driver
-Relay switching stage
-Flyback protection diode
-LED indicator
-AC bulb output terminal
-Signal Flow
+```text
+POWER SECTION
+AC Input → HLK-5M0x → 5V DC
+
+SENSOR SECTION
+LDR → Voltage Divider → Sensor Voltage
+
+REFERENCE SECTION
+5V → 100kΩ Potentiometer → Reference Voltage
+
+COMPARATOR SECTION
+Sensor Voltage + Reference Voltage → LM358
+
+DRIVER / OUTPUT SECTION
+LM358 → BC547 → 5V Relay → AC Bulb
+```
+
+---
+
+## 🔧 Schematic Design
+
+The complete schematic was designed in **EasyEDA** before PCB implementation.
+
+### Schematic Includes
+
+- AC power input
+- AC-DC power supply
+- LDR sensing network
+- Adjustable reference network
+- LM358 comparator
+- BC547 transistor driver
+- 5V relay
+- Flyback protection diode
+- LED indicator
+- AC bulb output connector
+
+### Signal Flow
+
+```text
 Ambient Light
       ↓
-      LDR
+     LDR
       ↓
 Voltage Divider
       ↓
-Variable Voltage
+Sensor Voltage
       ↓
 LM358 Comparator
       ↓
-BC547
+BC547 Driver
       ↓
 5V Relay
       ↓
 AC Load
-🖥️ PCB Design Using EasyEDA
+```
 
-The complete PCB was designed using EasyEDA.
+---
 
-The design process included:
+## 🖥️ PCB Design Using EasyEDA
 
-Circuit Design
-     ↓
+The complete PCB was designed using **EasyEDA**.
+
+### Design Workflow
+
+```text
+Circuit Concept
+      ↓
 Schematic Capture
-     ↓
-Component Selection
-     ↓
+      ↓
 Footprint Assignment
-     ↓
-PCB Placement
-     ↓
+      ↓
+Component Placement
+      ↓
 PCB Routing
-     ↓
+      ↓
 Design Verification
-     ↓
+      ↓
 3D Visualization
-     ↓
+      ↓
 PCB Fabrication
-     ↓
+      ↓
 Component Assembly
-PCB Design Features
-Custom PCB layout
-Through-hole components
-Dedicated AC input terminal
-Dedicated bulb output terminal
-Relay footprint
-SMPS footprint
-LM358 DIP package
-LDR placement
-Potentiometer placement
-LED status indicator
-Routed signal and power traces
-Component reference labels
-3D PCB visualization
-🏗️ PCB Development
+      ↓
+Hardware Testing
+```
 
-The project was implemented through the following hardware development stages:
+### PCB Design Features
 
-Stage 1 — Schematic
+- Custom PCB layout
+- Through-hole component implementation
+- Dedicated AC input terminal
+- Dedicated bulb output terminal
+- Relay footprint
+- SMPS footprint
+- LM358 DIP package
+- LDR placement
+- Potentiometer placement
+- LED status indicator
+- Power and signal routing
+- Component reference labels
+- 3D PCB visualization
+
+---
+
+## 🏗️ Hardware Development
+
+### Stage 1 — Schematic
 
 The complete circuit was designed and interconnected in EasyEDA.
 
-Stage 2 — PCB Layout
+### Stage 2 — PCB Layout
 
-Components were positioned according to their electrical and mechanical requirements.
+Components were positioned according to electrical connections and board constraints.
 
-Stage 3 — Routing
+### Stage 3 — Routing
 
-The PCB traces were routed to connect the power, sensing, comparator, driver, and relay sections.
+The PCB was routed to connect the power, sensing, comparator, driver, and relay sections.
 
-Stage 4 — 3D Verification
+### Stage 4 — 3D Verification
 
-The EasyEDA 3D viewer was used to verify component placement and board appearance before fabrication.
+The EasyEDA 3D viewer was used to verify component placement and mechanical arrangement before fabrication.
 
-Stage 5 — Fabrication
+### Stage 5 — Fabrication
 
-The PCB layout was converted into a physical PCB.
+The finalized PCB layout was used to manufacture the physical board.
 
-Stage 6 — Assembly
+### Stage 6 — Assembly
 
-Components including the SMPS, relay, LM358, LDR, BC547, diode, resistors, potentiometer, and LED were assembled onto the board.
+The SMPS, relay, LM358, LDR, BC547, diode, resistors, potentiometer, LED, and connectors were assembled on the PCB.
 
-Stage 7 — Testing
+### Stage 7 — Testing
 
-The assembled circuit was tested by changing the light intensity over the LDR and adjusting the potentiometer to verify the switching response.
+The assembled prototype was tested by changing the light level over the LDR and adjusting the potentiometer to verify the switching response.
 
-🧪 Testing Procedure
+---
 
-The prototype can be tested using the following procedure:
+## 🧪 Testing Procedure
 
+```text
 1. Power the circuit
         ↓
 2. Verify 5V DC supply
         ↓
-3. Expose LDR to light
+3. Expose the LDR to light
         ↓
-4. Gradually cover the LDR
+4. Cover the LDR gradually
         ↓
 5. Observe sensor response
         ↓
-6. Adjust potentiometer
+6. Adjust the potentiometer
         ↓
-7. Observe LM358 output
+7. Verify comparator output
         ↓
 8. Verify BC547 switching
         ↓
 9. Observe relay operation
         ↓
-10. Verify AC bulb switching
+10. Verify AC load switching
+```
 
-The potentiometer allows the switching threshold to be adjusted according to the required lighting condition.
+---
 
-📊 Expected Operation
+## 📊 Operating Logic
 
-The switching behavior depends on the comparator input configuration and the orientation of the LDR voltage divider.
+The exact ON/OFF behavior depends on the comparator input polarity and LDR divider arrangement.
 
-A typical automatic lighting configuration is:
+For a typical automatic night-light configuration:
 
-Light Condition	LDR Resistance	Relay	Bulb
-Bright	Low	OFF	OFF
-Low Light	Higher	Depends on threshold	Depends on threshold
-Dark	High	ON	ON
+| Light Condition | LDR Resistance | Desired Bulb State |
+|---|---|---|
+| Bright | Low | OFF |
+| Low Light | Increasing | Transition |
+| Dark | High | ON |
 
-The exact transition point can be adjusted using the potentiometer.
+The switching point can be adjusted using the potentiometer.
 
-📐 Important Circuit Concepts
+---
 
-This project demonstrates several fundamental electronics concepts:
+## 📐 Key Electronics Concepts
 
-Voltage Divider
+### Voltage Divider
 
-The LDR is used with a resistor to convert resistance variation into voltage.
+Converts the LDR resistance change into a measurable voltage.
 
-Comparator
+### Comparator
 
-The LM358 compares the sensor voltage against an adjustable reference.
+The LM358 compares the sensor voltage with an adjustable reference.
 
-Transistor Switching
+### Transistor Switching
 
-The BC547 works as a switch to control the relay coil.
+The BC547 operates as a switching device for the relay coil.
 
-Flyback Protection
+### Flyback Protection
 
-The diode protects the transistor from relay coil back-EMF.
+The diode suppresses the relay's inductive voltage transient during turn-off.
 
-Relay Isolation
+### Relay Interface
 
-The relay provides an interface between the low-voltage control circuit and the AC load.
+The relay provides the interface between the low-voltage control circuit and the AC load.
 
-AC-DC Conversion
+### AC-DC Conversion
 
-The HLK-5M05 converts the AC input into the required 5V DC supply.
+The HLK module provides the required 5V DC control supply.
 
-🛠️ Technologies & Skills
-Electronics
-Analog Electronics
-LDR Sensor Interfacing
-Voltage Divider Design
-Comparator Circuits
-Op-Amp Applications
-Transistor Switching
-Relay Driver Design
-Flyback Protection
-LED Current Limiting
-PCB Design
-Schematic Capture
-PCB Layout
-Component Placement
-PCB Routing
-Through-Hole PCB Design
-Footprint Selection
-Design Verification
-3D PCB Visualization
-PCB Fabrication
-PCB Assembly
-Software
-EasyEDA
-Hardware
-LM358
-BC547
-LDR
-Relay
-AC-DC SMPS
-Diode
-Potentiometer
-LED
-📁 Repository Structure
-Automatic-Light-Control/
+---
+
+## 🛠️ Technologies & Skills
+
+### Electronics
+
+- Analog Electronics
+- LDR Sensor Interfacing
+- Voltage Divider Design
+- Comparator Circuits
+- Op-Amp Applications
+- Transistor Switching
+- Relay Driver Design
+- Flyback Protection
+- LED Current Limiting
+
+### PCB Design
+
+- EasyEDA
+- Schematic Capture
+- PCB Layout
+- Component Placement
+- Footprint Selection
+- PCB Routing
+- Design Verification
+- 3D PCB Visualization
+- PCB Fabrication
+- PCB Assembly
+
+### Hardware
+
+- LM358
+- BC547
+- LDR
+- 5V Relay
+- AC-DC SMPS
+- 1N4148 Diode
+- Potentiometer
+- LED
+
+---
+
+## 📁 Repository Structure
+
+```text
+PCB-based-Automatic-Light-Control-LDR-Based-Relay-Switching-System/
 │
 ├── README.md
-│
 ├── Schematic/
-│   └── Automatic_Light_Sensor_Schematic.pdf
-│
 ├── PCB/
-│   ├── PCB_Layout.png
-│   └── PCB_3D_View.png
-│
+├── 3D_Model/
 ├── Hardware/
-│   └── Assembled_PCB.jpg
-│
 └── Documentation/
-    └── Project_Details.pdf
+```
 
-File names can be changed according to the actual files uploaded to the repository.
+> Update the folder and file names above to match the actual repository contents.
 
-📷 Project Images
+---
 
-The repository includes images showing the complete development process:
+## 📷 Project Images
 
+The project can be documented through the following development stages:
+
+```text
 Schematic
-    ↓
+   ↓
 PCB Layout
-    ↓
+   ↓
 3D PCB Model
-    ↓
+   ↓
 Fabricated PCB
-    ↓
+   ↓
 Assembled Hardware
+```
 
-Recommended images to include:
+Recommended documentation images:
 
-Schematic.png
-PCB_Layout.png
-PCB_3D_View.png
-Assembled_PCB.jpg
-🚀 Future Improvements
+- `Schematic.png`
+- `PCB_Layout.png`
+- `PCB_3D_View.png`
+- `Assembled_PCB.jpg`
 
-The current analog design can be further improved by adding:
+---
 
-🌙 Automatic night-light mode
-⏱️ Adjustable ON/OFF time delay
-🔄 Hysteresis to prevent relay chattering
-📊 Digital light intensity measurement
-📟 LCD/OLED display
-📡 ESP32-based IoT monitoring
-📱 Mobile application control
-☁️ Cloud data logging
-🔌 Solid-state relay for silent switching
-⚡ Fuse and over-current protection
-🛡️ Improved mains isolation and enclosure
-🔋 Battery backup option
-💼 Applications
+## 🚀 Future Improvements
 
-This type of circuit can be used for:
+- Add hysteresis to prevent relay chattering near the switching threshold
+- Add adjustable ON/OFF delay
+- Add LCD/OLED display for light-level indication
+- Add microcontroller-based digital sensing
+- Add ESP32-based IoT monitoring
+- Add mobile notifications and remote control
+- Add cloud data logging
+- Replace the mechanical relay with an SSR for silent switching
+- Add fuse and over-current protection
+- Improve enclosure and mains isolation
+- Add automatic day/night calibration
 
-Automatic street lights
-Home lighting automation
-Corridor lighting
-Garden lights
-Outdoor lighting
-Energy-saving lighting systems
-Automatic night lamps
-Light-dependent switching systems
-Industrial light-control applications
-⚠️ Safety Warning
+---
 
-WARNING: This project contains an AC mains switching section.
+## 💼 Applications
+
+- Automatic night lamps
+- Street-light control
+- Home lighting automation
+- Corridor lighting
+- Garden lighting
+- Outdoor lighting systems
+- Parking-area lighting
+- Energy-saving lighting systems
+- Light-dependent switching applications
+
+---
+
+## ⚠️ Safety Warning
+
+> **This project contains an AC mains switching section.**
 
 The relay contacts and AC terminals may carry dangerous mains voltage.
 
-When operating the circuit with an AC bulb:
+When operating the circuit with mains voltage:
 
-Use proper insulation.
-Maintain adequate PCB creepage and clearance.
-Use appropriately rated terminals and wires.
-Use suitable fuse/protection.
-Place the PCB inside a proper insulated enclosure.
-Never touch the PCB while connected to live mains.
-Disconnect AC power before modifying or debugging the hardware.
-Ensure the relay contact rating is suitable for the connected load.
+- Use proper insulation and an appropriate enclosure
+- Maintain adequate creepage and clearance
+- Use correctly rated terminals, wires, and relay contacts
+- Use suitable fuse/protection
+- Disconnect mains power before modifying or debugging the circuit
+- Never touch the PCB while connected to live mains
 
-The low-voltage control section should be treated separately from the mains switching section.
+**Only perform mains-voltage testing with appropriate electrical knowledge and safety precautions.**
 
-📌 Key Learning Outcomes
+---
 
-This project provided practical experience in:
+## 📌 Key Learning Outcomes
 
+```text
 Circuit Analysis
       ↓
 Analog Sensor Design
+      ↓
+Voltage Divider
       ↓
 Comparator Design
       ↓
@@ -597,29 +580,38 @@ PCB Routing
 Hardware Assembly
       ↓
 Testing & Debugging
+```
 
-It demonstrates the complete transition from an electronic circuit concept to a working physical PCB prototype.
+This project demonstrates the complete workflow from an electronic circuit concept to a fabricated and assembled PCB prototype.
 
-📈 Project Highlights
-Designed a complete analog light-sensing circuit
-Implemented an LDR-based ambient light detection system
-Used LM358 as a voltage comparator
-Designed a BC547-based relay driver
-Added flyback protection for the relay
-Implemented adjustable light threshold control
-Designed the complete PCB using EasyEDA
-Created and verified the PCB in 3D
-Fabricated and assembled the physical PCB
-Tested the circuit using an AC bulb load
-📌 Project Summary
+---
 
-An EasyEDA-designed automatic light control system that uses an LDR-based voltage divider, LM358 comparator, adjustable threshold control, BC547 transistor driver, and 5V relay to detect ambient light and control an AC bulb. The project covers the complete electronics development cycle from schematic design and PCB layout to fabrication, assembly, and hardware testing.
+## 🎯 Project Highlights
 
-👤 Author
+- Designed an analog LDR-based light sensing circuit
+- Implemented adjustable threshold detection
+- Used LM358 as the comparator stage
+- Designed a BC547-based relay driver
+- Added flyback protection for the relay
+- Implemented AC load switching
+- Designed the complete PCB using EasyEDA
+- Created and verified the PCB in 3D
+- Fabricated and assembled the physical prototype
+- Tested the light-dependent switching operation
 
-Ramachandru
+---
 
+## 📌 Project Summary
+
+> **An EasyEDA-designed automatic light control system using an LDR, LM358 comparator, BC547 transistor, and 5V relay to detect ambient light and control an AC bulb. The project covers analog sensing, threshold comparison, transistor switching, relay interfacing, protection circuitry, PCB layout, fabrication, assembly, and hardware testing.**
+
+---
+
+## 👤 Author
+
+**Ramachandru**  
 B.Tech Electronics & Communication Engineering
 
-Skills:
-Analog Electronics · Embedded Systems · PCB Design · EasyEDA · Circuit Design · Hardware Prototyping
+**Analog Electronics | Embedded Systems | PCB Design | IoT**
+
+---
